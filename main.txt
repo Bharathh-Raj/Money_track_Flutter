@@ -1,0 +1,223 @@
+import 'package:flutter/material.dart';
+import './trans.dart';
+import 'package:intl/intl.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  TextEditingController inptitle=TextEditingController();
+  TextEditingController inpamount=TextEditingController();
+  Transaction val;
+
+  List<Transaction> trans = [
+    Transaction(amount: 250, id: "t1", time: DateTime.now(), title: "Lunch"),
+    Transaction(amount: 50, id: "t2", time: DateTime.now(), title: "Dinner"),
+    Transaction(amount: 1250, id: "t3", time: DateTime.now(), title: "WI-FI"),
+  ];
+  //print(trans[0].title);
+  @override
+  Widget build(BuildContext context) {
+    print(trans[0].title);
+    return MaterialApp(
+        home: Scaffold(
+            appBar: AppBar(title: Text('Money_Track')),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Card(
+                  child: Container(
+                      height: 120, child: Center(child: Text('Chart'))),
+                  elevation: 2,
+                ),
+                TextField(
+                  controller: inptitle ,
+                  decoration: InputDecoration(labelText: 'Title')
+                  ),
+                TextField(
+                  controller: inpamount,
+                  decoration: InputDecoration(labelText: 'Amount')
+                ),
+                RaisedButton(
+                  child:Text('Click me'),
+                  onPressed: (){
+                    print(inptitle.text);
+                    print(inpamount.text);
+                    trans.add(Transaction(amount:double.parse(inpamount.text),title:inptitle.text,time:DateTime.now()));
+                  },
+                ),
+                Container(
+                  height: 200,
+                  child: ListView.builder(
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                          margin: EdgeInsets.all(5),
+                          elevation: 3,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                //height: 30,
+                                width: 120,
+                                padding: EdgeInsets.all(6),
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 6, horizontal: 20),
+                                child: Text('Rs.${trans[index].amount}',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.purple)),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.purple, width: 2),
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(trans[index].title,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 18)),
+                                  Text(
+                                      DateFormat.yMd()
+                                          .format(trans[index].time),
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 12)),
+                                ],
+                              ),
+                            ],
+                          ));
+                    },
+                    itemCount: trans.length,
+                  ),
+                ),
+                FloatingActionButton(
+                  child: Icon(Icons.add),
+                  onPressed: null,
+                )
+              ],
+            )
+          )
+      );
+  }
+}
+
+
+import 'package:flutter/material.dart';
+import './models/trans.dart';
+import 'package:intl/intl.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController inptitle=TextEditingController();
+
+  TextEditingController inpamount=TextEditingController();
+
+  Transaction val;
+
+  List<Transaction> trans = [
+    Transaction(amount: 250, id: "t1", time: DateTime.now(), title: "Lunch"),
+    Transaction(amount: 50, id: "t2", time: DateTime.now(), title: "Dinner"),
+    Transaction(amount: 1250, id: "t3", time: DateTime.now(), title: "WI-FI"),
+  ];
+
+  void onpress(){
+    setState((){
+      trans.add(Transaction(amount:double.parse(inpamount.text),title:inptitle.text,time:DateTime.now()));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print(trans[0].title);
+    return MaterialApp(
+        home: Scaffold(
+            appBar: AppBar(title: Text('Money_Track')),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Card(
+                  child: Container(
+                      height: 120, child: Center(child: Text('Chart'))),
+                  elevation: 2,
+                ),
+                TextField(
+                  controller: inptitle ,
+                  decoration: InputDecoration(labelText: 'Title')
+                  ),
+                TextField(
+                  controller: inpamount,
+                  decoration: InputDecoration(labelText: 'Amount')
+                ),
+                RaisedButton(
+                  child:Text('Click me'),
+                  onPressed: onpress,
+                  // {
+                  //   print(inptitle.text);
+                  //   print(inpamount.text);
+                  //   trans.add(Transaction(amount:double.parse(inpamount.text),title:inptitle.text,time:DateTime.now()));
+                    
+                  // },
+                ),
+                Container(
+                  height: 200,
+                  child: ListView.builder(
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                          margin: EdgeInsets.all(5),
+                          elevation: 3,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                //height: 30,
+                                width: 120,
+                                padding: EdgeInsets.all(6),
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 6, horizontal: 20),
+                                child: Text('Rs.${trans[index].amount}',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.purple)),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.purple, width: 2),
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(trans[index].title,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 18)),
+                                  Text(
+                                      DateFormat.yMd()
+                                          .format(trans[index].time),
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 12)),
+                                ],
+                              ),
+                            ],
+                          ));
+                    },
+                    itemCount: trans.length,
+                  ),
+                ),
+                FloatingActionButton(
+                  child: Icon(Icons.add),
+                  onPressed: null,
+                )
+              ],
+            )
+          )
+      );
+  }
+}
